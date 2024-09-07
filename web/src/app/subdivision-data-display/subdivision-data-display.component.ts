@@ -1,15 +1,63 @@
 import { Component, OnInit } from '@angular/core';
+import { SubdivisionService } from './subdivision.service';
+import { Subdivision } from './subdivision-model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subdivision-data-display',
   templateUrl: './subdivision-data-display.component.html',
-  styleUrls: ['./subdivision-data-display.component.css']
+  styleUrls: ['./subdivision-data-display.component.css'],
 })
 export class SubdivisionDataDisplayComponent implements OnInit {
+  subdivisions: Subdivision[] = [];
+  filteredSubdivisions: Subdivision[] = [];
+  filterCriteria = 'All';
+  sortCriteria = 'name';
 
-  constructor() { }
+  constructor(private subdivisionService: SubdivisionService) {}
 
   ngOnInit(): void {
+    this.subdivisionService.getSubdivisions().subscribe((data) => {
+      debugger;
+      this.subdivisions = data.subdivisions;
+      this.applyFilterAndSort();
+    });
   }
 
+  applyFilterAndSort(): void {
+    let filteredData = [...this.subdivisions];
+
+    if (this.filterCriteria !== 'All') {
+      filteredData = filteredData.filter(
+        (subdivision) => subdivision.subdivisionStatusCode === this.filterCriteria
+      );
+    }
+
+    filteredData.sort((a: any, b: any) => {
+      if (this.sortCriteria === 'name') {
+        return a.name.localeCompare(b.name);
+      } else if (this.sortCriteria === 'nearMapImageDate') {
+        return new Date(b.nearMapImageDate).getTime() - new Date(a.nearMapImageDate).getTime();
+      }
+      return 0;
+    });
+
+    this.filteredSubdivisions = filteredData;
+  }
+
+  onFilterChange(event: Event): void {
+    const filterValue = (event.target as HTMLSelectElement).value;
+    this.filterCriteria = filterValue;
+    this.applyFilterAndSort();
+  }
+
+  onSortChange(event: Event): void {
+    this.sortCriteria = (event.target as HTMLSelectElement).value;
+    this.applyFilterAndSort();
+  }
+
+  trackBySubdivision(index: number, subdivision: Subdivision): number {
+    return subdivision.id;
+  }
 }

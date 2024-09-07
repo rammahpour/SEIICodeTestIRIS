@@ -1,1 +1,29 @@
-<p>Display the subdivision data here!</p>
+<div>
+    <label for="filter">Filter by Status: </label>
+    <select id="filter" (change)="onFilterChange($event)">
+      <option value="All">All</option>
+      <option value="Active">Active</option>
+      <option value="Future">Future</option>
+      <option value="Builtout">Builtout</option>
+    </select>
+  
+    <label for="sort">Sort by: </label>
+    <select id="sort" (change)="onSortChange($event)">
+      <option value="name">Subdivision Name</option>
+      <option value="nearMapImageDate">Near Map Image Date</option>
+    </select>
+  </div>
+  
+  <ul *ngIf="filteredSubdivisions.length > 0">
+    <li *ngFor="let subdivision of filteredSubdivisions; trackBy: trackBySubdivision">
+      <h3>{{ subdivision.name }}</h3>
+      <p>Location: {{ subdivision.latitude }}, {{ subdivision.longitude }}</p>
+      <p>Status: {{ subdivision.subdivisionStatusCode }}</p>
+      <p *ngIf="subdivision.nearMapImageDate">Near Map Image Date: {{ subdivision.nearMapImageDate | date }}</p>
+    </li>
+  </ul>
+  
+  <div *ngIf="filteredSubdivisions.length === 0">
+    No subdivisions found.
+  </div>
+  
