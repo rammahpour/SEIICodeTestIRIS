@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SubdivisionService } from './subdivision.service';
-import { ISubdivision, SubdivisionStatusCode } from './subdivision-model';
+import { ISubdivisionData, SubdivisionStatusCode } from './subdivision-model';
 
 describe('SubdivisionService', () => {
   let service: SubdivisionService;
   let httpMock: HttpTestingController;
 
-  const mockSubdivisions: ISubdivision = {
+  const mockSubdivisions: ISubdivisionData = {
     subdivisions: [
       { id: 1, name: 'Subdivision A', subdivisionStatusCode: SubdivisionStatusCode.Active, latitude: 10, longitude: 20, nearMapImageDate: new Date('2023-01-01') },
       { id: 2, name: 'Subdivision B', subdivisionStatusCode: SubdivisionStatusCode.Future, latitude: 30, longitude: 40, nearMapImageDate: new Date('2023-02-01') },

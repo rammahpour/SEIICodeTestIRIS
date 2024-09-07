@@ -1,4 +1,4 @@
-export interface ISubdivision {
+export interface ISubdivisionData {
     subdivisions: Subdivision[];
 }
 
