@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SubdivisionService } from './subdivision.service';
 import { Subdivision } from './subdivision-model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -9,17 +9,18 @@ import { map } from 'rxjs/operators';
   templateUrl: './subdivision-data-display.component.html',
   styleUrls: ['./subdivision-data-display.component.css'],
 })
-export class SubdivisionDataDisplayComponent implements OnInit {
+export class SubdivisionDataDisplayComponent implements OnInit, OnDestroy {
   subdivisions: Subdivision[] = [];
   filteredSubdivisions: Subdivision[] = [];
   filterCriteria = 'All';
   sortCriteria = 'name';
+  private subscription!: Subscription;
+
 
   constructor(private subdivisionService: SubdivisionService) {}
 
   ngOnInit(): void {
     this.subdivisionService.getSubdivisions().subscribe((data) => {
-      debugger;
       this.subdivisions = data.subdivisions;
       this.applyFilterAndSort();
     });
@@ -59,5 +60,11 @@ export class SubdivisionDataDisplayComponent implements OnInit {
 
   trackBySubdivision(index: number, subdivision: Subdivision): number {
     return subdivision.id;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
