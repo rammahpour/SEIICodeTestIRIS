@@ -8,7 +8,7 @@ import { ISubdivision } from './subdivision-model';
 })
 export class SubdivisionService {
 
-  private apiUrl = 'http://localhost:3000/v1/subdivisions'; // Replace with your API endpoint or JSON file path
+  private apiUrl = 'http://localhost:3000/v1/subdivisions';
 
   constructor(private http: HttpClient) {}
 
