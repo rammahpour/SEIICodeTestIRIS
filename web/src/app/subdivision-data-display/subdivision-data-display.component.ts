@@ -20,7 +20,7 @@ export class SubdivisionDataDisplayComponent implements OnInit, OnDestroy {
   constructor(private subdivisionService: SubdivisionService) {}
 
   ngOnInit(): void {
-    this.subdivisionService.getSubdivisions().subscribe((data) => {
+    this.subscription = this.subdivisionService.getSubdivisions().subscribe((data) => {
       this.subdivisions = data.subdivisions;
       this.applyFilterAndSort();
     });
